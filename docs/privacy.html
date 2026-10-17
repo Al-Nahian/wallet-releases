@@ -59,6 +59,11 @@
     <li>This permission is off by default and optional — you can use Wallet fully by entering
       transactions manually if you prefer not to grant it. It's requested only when you turn on
       "Enable SMS detection" in Automation Settings, never on first launch.</li>
+    <li>So that one payment isn't recorded twice when it arrives as both an SMS and a
+      notification, Wallet keeps a one-way fingerprint (a SHA-256 hash) of each captured
+      message, together with the extracted amount and accounts, for 7 days. The message text
+      can't be recovered from the fingerprint, it never leaves your device, and it's deleted
+      automatically after 7 days.</li>
   </ul>
 
   <h2>Notification access (optional automation feature)</h2>
@@ -103,17 +108,62 @@
       Google/Microsoft, one of Wallet's built-in preset icons, or a custom photo you upload) tied
       to your account, used only to identify your account within Wallet. A custom photo you upload
       is stored only on your device, never uploaded to our backend.</li>
-    <li>Optionally backs up your financial data to encrypted cloud storage so you can restore it
-      or sync it across your own devices.</li>
+    <li>Backs up your financial data — accounts, transactions, categories, budgets, recurring
+      payments, goals, debts, labels and templates — plus a few app settings (theme, and whether
+      SMS/notification detection is switched on), so you can restore them on another device.
+      The backup is sent over an encrypted connection and stored encrypted at rest by our
+      backend provider. For protection that also covers the people running the service, see
+      "End-to-end encryption" below.</li>
     <li>Keeps a short activity log tied to your account (e.g. "Transaction amount changed from
       BDT 500.00 to BDT 650.00") so changes made from different devices can be reconciled
       correctly — never your raw SMS or notification text, and visible only to you.</li>
     <li>Your data is protected by database-level access rules (Row Level Security) so that only
-      your own signed-in account can ever read or write your data — not other users, and not us.</li>
+      your own signed-in account can read or write it — never other users. These rules don't
+      apply to the service's administrators, so unless you turn on end-to-end encryption, the
+      developer and our backend provider can technically access your backed-up data. We don't
+      look at it, but we'd rather you not have to take our word for it — that's what end-to-end
+      encryption is for.</li>
+    <li>Records which device currently holds your sign-in. Your account can be signed in on one
+      device at a time: signing in on a new device signs the previous one out.</li>
   </ul>
+
+  <h2>End-to-end encryption (optional)</h2>
   <p>
-    Signing out does not delete your local data. You can request deletion of your cloud account
-    and all associated data at any time by contacting us (see below).
+    You can turn on end-to-end encryption in your Profile. When it's on, your financial data and
+    synced settings are encrypted on your device before they're uploaded, with a key only you
+    hold. Nobody else can read them — not the developer, not our backend provider, and not
+    anyone with direct access to the database.
+  </p>
+  <ul>
+    <li>When you turn it on, Wallet creates a 12-word recovery phrase and shows it to you once. The
+      encryption key is derived from that phrase on your device. The phrase is never sent to us,
+      and we can't recover or reset it. If you lose it, your encrypted backup can't be restored on
+      a new device.</li>
+    <li>To unlock your backup on a new device, you enter your recovery phrase. On a device you've
+      already unlocked, the key is kept in the device's secure hardware-backed key store.</li>
+    <li>What stays readable to the service: technical details needed to sync — record IDs, when
+      records were created or changed, which records belong together (for example, which account
+      a transaction belongs to), and your profile details (name, email, avatar). Amounts,
+      descriptions, names, notes and dates are encrypted.</li>
+    <li>Data you'd already backed up is converted when you turn encryption on, and the readable
+      copies are removed from the live database. Our backend provider keeps routine backups for a
+      limited time, so earlier copies may remain there until those backups expire.</li>
+  </ul>
+
+  <h2>Signing out and deleting your data</h2>
+  <p>
+    Signing out removes your data from the device, so the next person to use it can't see your
+    finances. If any changes haven't been backed up yet, Wallet offers to back them up first, and
+    asks you to confirm before deleting anything that hasn't been backed up.
+  </p>
+  <p>
+    If your sign-in ends without you signing out — for example, because you signed in on another
+    device — your data stays on the device, hidden behind the sign-in screen, until you sign back
+    in with the same account or choose to remove it.
+  </p>
+  <p>
+    You can request deletion of your cloud account and all associated data at any time by
+    contacting us (see below).
   </p>
 
   <h2>What we don't do</h2>
