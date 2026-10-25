@@ -45,55 +45,24 @@
     This data is never transmitted anywhere unless you explicitly choose to sign in (see below).
   </p>
 
-  <h2>SMS access (optional)</h2>
+  <h2>SMS messages and other apps' notifications</h2>
   <p>
-    If you grant the SMS permission, Wallet reads incoming SMS messages on-device to automatically
-    detect and pre-fill transactions from bank and mobile-wallet alerts (e.g. bKash, Nagad,
-    Rocket, bank debit/credit notifications). This parsing happens entirely on your device:
+    Wallet does not read your SMS messages or the notifications of other apps, and it doesn't ask
+    for permission to. Transactions are added by you.
   </p>
-  <ul>
-    <li>Raw SMS content is never stored permanently and never leaves your device.</li>
-    <li>Only the extracted transaction summary (amount, merchant/payee, date) is kept, and only
-      after you review and confirm it (or, if you've explicitly marked a sender as trusted, it's
-      added automatically and you're notified with an option to undo).</li>
-    <li>This permission is off by default and optional — you can use Wallet fully by entering
-      transactions manually if you prefer not to grant it. It's requested only when you turn on
-      "Enable SMS detection" in Automation Settings, never on first launch.</li>
-    <li>So that one payment isn't recorded twice when it arrives as both an SMS and a
-      notification, Wallet keeps a one-way fingerprint (a SHA-256 hash) of each captured
-      message, together with the extracted amount and accounts, for 7 days. The message text
-      can't be recovered from the fingerprint, it never leaves your device, and it's deleted
-      automatically after 7 days.</li>
-  </ul>
-
-  <h2>Notification access (optional automation feature)</h2>
   <p>
-    Wallet offers a second, separate way to catch transactions SMS alone might miss, like a
-    mobile-wallet app's own cashback/reward notifications: reading notifications posted by other
-    apps on your device. This is off by default and requires two explicit steps — turning on
-    "Enable notification detection" in Automation Settings, then granting Wallet "Notification
-    access" in your device's system Settings (a special, high-trust Android permission separate
-    from the ordinary notifications permission below).
+    Earlier versions offered an optional, off-by-default feature that read bank and mobile-wallet
+    alerts on your device to suggest transactions. It has been removed. If you had used it, the
+    transactions it recorded stay in your data like any others; nothing else from those messages
+    was ever kept.
   </p>
-  <ul>
-    <li>Because of how this Android permission works, once granted, Wallet's notification listener
-      technically receives the content of every notification posted on your device, not just
-      banking ones — this is a platform requirement of the permission type, not something Wallet
-      can narrow in advance.</li>
-    <li>In practice, each notification's text is checked in memory, on-device, against patterns for
-      recognized bank/mobile-wallet messages; anything that doesn't match is discarded immediately
-      and never stored, logged, or transmitted anywhere.</li>
-    <li>Only a matched transaction's extracted summary (amount, merchant/payee, date) is kept, the
-      same way as SMS capture above, and the same review/trusted-sender flow applies.</li>
-    <li>You can revoke this access at any time from your device's Settings &rarr; Apps &rarr;
-      Special app access &rarr; Notification access.</li>
-  </ul>
 
   <h2>App notifications you receive</h2>
   <p>
-    Separately, the ordinary notifications permission is used only for the app's own in-app
-    alerts — budget warnings, upcoming recurring payments, goal milestones, captured-transaction
-    confirmations — and is never used to deliver advertising or third-party content.
+    The notifications permission is used only for Wallet's own alerts — budget warnings,
+    upcoming recurring payments, debt due dates and goal milestones. It's asked for once, when
+    you first add something that sends them, and is never used for advertising or third-party
+    content.
   </p>
 
   <h2>Optional account sign-in and cloud sync</h2>
@@ -109,14 +78,14 @@
       to your account, used only to identify your account within Wallet. A custom photo you upload
       is stored only on your device, never uploaded to our backend.</li>
     <li>Backs up your financial data — accounts, transactions, categories, budgets, recurring
-      payments, goals, debts, labels and templates — plus a few app settings (theme, and whether
-      SMS/notification detection is switched on), so you can restore them on another device.
+      payments, goals, debts, labels and templates — plus a few app settings (such as your
+      theme), so you can restore them on another device.
       The backup is sent over an encrypted connection and stored encrypted at rest by our
       backend provider. For protection that also covers the people running the service, see
       "End-to-end encryption" below.</li>
     <li>Keeps a short activity log tied to your account (e.g. "Transaction amount changed from
       BDT 500.00 to BDT 650.00") so changes made from different devices can be reconciled
-      correctly — never your raw SMS or notification text, and visible only to you.</li>
+      correctly — visible only to you.</li>
     <li>Your data is protected by database-level access rules (Row Level Security) so that only
       your own signed-in account can read or write it — never other users. These rules don't
       apply to the service's administrators, so unless you turn on end-to-end encryption, the
@@ -180,8 +149,7 @@
   <ul>
     <li>No advertising, and no third-party analytics or tracking SDKs are included in the app.</li>
     <li>We never sell or share your financial data with third parties.</li>
-    <li>We don't use SMS or notification access for anything other than on-device transaction
-      parsing — both are off by default and opt-in.</li>
+    <li>We don't read your SMS messages or other apps' notifications.</li>
   </ul>
 
   <h2>Children's privacy</h2>
